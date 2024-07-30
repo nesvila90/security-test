@@ -85,6 +85,27 @@ POST /api/users/register
 ```
 POST /api/auth/login
 ```
+### Diseño de la solución
+
+ -- **Diagramas C4**
+ -- ** Diagrama de Sequencia**
+
+## Diagramas C4
+
+ Diagrama de Contexto - Nivel 1
+![mermaid-diagram-2024-07-30-125119](https://github.com/user-attachments/assets/cc37e91f-bd8e-46a7-a065-0dca6f1625cc)
+
+Diagrama de Contenedores - Nivel 2
+![mermaid-diagram-2024-07-30-130132](https://github.com/user-attachments/assets/106332c6-9dc4-4c87-8fcb-1fd12f192fd5)
+
+
+Diagrama de Componentes - Nivel 1
+![mermaid-diagram-2024-07-30-130137](https://github.com/user-attachments/assets/9e930a8e-e04a-44ec-86a7-dd9714a5cfb3)
+
+## Diagrama de Sequencia
+Aspectos a modo global - Partiendo desde el diseño de la solución.
+![mermaid-diagram-2024-07-30-130208](https://github.com/user-attachments/assets/f3cd8d71-1191-4f41-a1b4-6042bd2ef92b)
+
 
 ## Estructura del Proyecto
 
