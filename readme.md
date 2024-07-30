@@ -4,6 +4,10 @@ Este proyecto es una aplicación de seguridad desarrollada con Spring Boot, util
 
 ## Requisitos
 
+
+[![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
+
 - **Java 21**
 - **Gradle 7.0 o superior**
 - **Git**
