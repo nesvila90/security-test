@@ -3,6 +3,7 @@ package com.nissum.security.controller;
 import com.nissum.security.domain.dto.PhonesDTO;
 import com.nissum.security.domain.dto.UserRequestDTO;
 import com.nissum.security.domain.dto.UserResponseDTO;
+import com.nissum.security.domain.exceptions.NissumException;
 import com.nissum.security.security.jwt.JwtTokenProvider;
 import com.nissum.security.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static com.nissum.security.domain.enums.NissumExceptionsTypes.USER_ALREADY_EXIST;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -71,11 +73,38 @@ class UserControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"password123\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
+                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"Password123*\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.token", is("some-token")))
                 .andExpect(jsonPath("$.isActive", is(true)));
+    }
+
+    @Test
+    void testFailCreateUserWhenEmailIsWrong() throws Exception {
+
+        Mockito.when(userService.createUser(any(UserRequestDTO.class))).thenThrow(new NissumException("", USER_ALREADY_EXIST));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Test User\",\"email\":\"testuser.com\",\"password\":\"Password123*\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorMessage", is("Email invalid format"))
+                );
+    }
+
+    @Test
+    void testFailCreateUserWhenPasswordIsWrong() throws Exception {
+        Mockito.when(userService.createUser(any(UserRequestDTO.class))).thenReturn(userResponseDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"password123*\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorMessage", is("Password not met security conditions."))
+                );
     }
 }

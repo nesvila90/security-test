@@ -45,7 +45,7 @@ class RestControllerAdviserTest {
 
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"password123\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
+                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"Password123*\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.errorMessage", is("General error")));
     }
@@ -57,7 +57,7 @@ class RestControllerAdviserTest {
 
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"password123\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
+                        .content("{\"name\":\"Test User\",\"email\":\"testuser@example.com\",\"password\":\"Password123*\",\"phones\":[{\"number\":\"1234567890\",\"cityCode\":\"1\",\"countryCode\":\"57\"}]}"))
                 .andExpect(status().isPreconditionFailed())
                 .andExpect(jsonPath("$.errorMessage", is("El usuario ya existe.")));
     }
